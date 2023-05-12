@@ -1,0 +1,27 @@
+### 회원가입
+POST http://localhost:8080/api/user/signup
+Content-Type: application/json
+
+{
+  "email": "gs6107184@gmail.com",
+  "name": "홍길동",
+  "password": "159789"
+}
+
+### 이메일 인증
+POST http://localhost:8080/api/user/signup/mail
+Content-Type: application/json
+
+{
+  "email": "gs6107184@gmail.com",
+  "code": ""
+}
+
+### 이메일인증코드
+POST http://localhost:8080/api/user/signup/maila/auth
+Content-Type: application/json
+
+{
+  "email": "gs6107184@gmail.com",
+  "code": "765740"
+}

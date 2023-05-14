@@ -1,9 +1,12 @@
 package com.project.collab.service;
 
 import static com.project.collab.exception.ErrorCode.ALREADY_REGISTER_USER;
+import static com.project.collab.exception.ErrorCode.LOGIN_CHECK_FAIL;
 import static com.project.collab.exception.ErrorCode.NOT_FOUND_USER;
 
+import com.project.collab.config.jwt.JwtAuthenticationProvider;
 import com.project.collab.domain.User;
+import com.project.collab.domain.dto.SignInForm;
 import com.project.collab.exception.CustomException;
 import com.project.collab.domain.dto.SignUpForm;
 import com.project.collab.repository.UserRepository;
@@ -18,13 +21,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final JwtAuthenticationProvider provider;
 
     /**
      * 회원가입
      */
     @Transactional
     public User signUp(SignUpForm form) {
-        // 이메일 유효성 검사
+        // 이메일 중복 확인
         validateDuplicateUser(form);
 
         // 이메일 인증
@@ -55,5 +59,15 @@ public class UserService {
         return userRepository.findByEmail(email).orElseThrow(
             () -> new CustomException(NOT_FOUND_USER)
         );
+    }
+
+    /**
+     * 로그인
+     */
+    public String signIn(SignInForm form) {
+        User user = userRepository.findByEmail(form.getEmail()).stream()
+            .filter(u -> u.getPassword().equals(form.getPassword())).findFirst()
+            .orElseThrow(() -> new CustomException(LOGIN_CHECK_FAIL));
+        return provider.createToken(user.getEmail(), user.getId());
     }
 }

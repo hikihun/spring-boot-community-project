@@ -23,5 +23,14 @@ Content-Type: application/json
 
 {
   "email": "gs6107184@gmail.com",
-  "code": "765740"
+  "code": "720641"
+}
+
+### 로그인
+POST http://localhost:8080/api/user/signin
+Content-Type: application/json
+
+{
+  "email": "gs6107184@gmail.com",
+  "password": "159789"
 }

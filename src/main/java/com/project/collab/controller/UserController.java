@@ -1,6 +1,7 @@
 package com.project.collab.controller;
 
 import com.project.collab.domain.dto.EmailAuthFrom;
+import com.project.collab.domain.dto.SignInForm;
 import com.project.collab.domain.dto.SignUpForm;
 import com.project.collab.service.EmailService;
 import com.project.collab.service.UserService;
@@ -42,4 +43,13 @@ public class UserController {
         emailService.verifyEmail(form.getEmail(), form.getCode());
         return ResponseEntity.ok("인증이 완료되었습니다.");
     }
+
+    /**
+     * 로그인
+     */
+    @PostMapping("/api/user/signin")
+    public ResponseEntity<String> signIn(@RequestBody SignInForm form) {
+        return ResponseEntity.ok(userService.signIn(form));
+    }
+
 }

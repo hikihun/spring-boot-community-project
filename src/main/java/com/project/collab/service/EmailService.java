@@ -12,6 +12,7 @@ import javax.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,6 +26,7 @@ public class EmailService {
     /**
      * 인증메일 전송
      */
+    @Async
     public void emailAuth(String email) {
         Random random = new Random();
         String authKey = String.valueOf(random.nextInt(888888) + 111111);
@@ -52,6 +54,7 @@ public class EmailService {
     /**
      * 인증 확인
      */
+    @Async
     public void verifyEmail(String email, String code) {
         userRepository.findByEmail(email).ifPresent(u -> {
             throw new CustomException(ALREADY_REGISTER_USER);
